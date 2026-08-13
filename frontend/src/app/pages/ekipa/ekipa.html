@@ -1,22 +1,24 @@
 <h2>Ekipe</h2>
 
-<div class="card">
-  <h3>Dodaj ekipu</h3>
-  <form class="inline-form" (ngSubmit)="dodaj()">
-    <div class="field">
-      <label>Naziv</label>
-      <input name="naziv" [(ngModel)]="forma.Naziv" required />
-    </div>
-    <div class="field">
-      <label>Liga</label>
-      <input name="liga" [(ngModel)]="forma.Liga" />
-    </div>
-    <button type="submit">Dodaj</button>
-  </form>
-  @if (greska()) {
-    <p class="error">{{ greska() }}</p>
-  }
-</div>
+@if (auth.admin()) {
+  <div class="card">
+    <h3>Dodaj ekipu</h3>
+    <form class="inline-form" (ngSubmit)="dodaj()">
+      <div class="field">
+        <label>Naziv</label>
+        <input name="naziv" [(ngModel)]="forma.Naziv" required />
+      </div>
+      <div class="field">
+        <label>Liga</label>
+        <input name="liga" [(ngModel)]="forma.Liga" />
+      </div>
+      <button type="submit">Dodaj</button>
+    </form>
+    @if (greska()) {
+      <p class="error">{{ greska() }}</p>
+    }
+  </div>
+}
 
 <div class="card">
   <table>

@@ -28,7 +28,7 @@ def popis_utakmica():
     return [_spoji(u) for u in utakmice]
 
 
-@router.post("", response_model=schemas.UtakmicaRead, status_code=201)
+@router.post("", response_model=schemas.UtakmicaRead, status_code=201, dependencies=[Depends(samo_admin)])
 def dodaj_utakmicu(podaci: schemas.UtakmicaCreate):
     _provjeri_veze(podaci)
     uid = database.sljedeci_id("utakmica")

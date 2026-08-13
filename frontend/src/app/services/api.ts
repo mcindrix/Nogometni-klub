@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Service, inject } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import {
@@ -16,7 +16,9 @@ import {
 
 const BASE_URL = 'http://localhost:8000/api';
 
-@Service()
+@Injectable({
+  providedIn: 'root'
+})
 export class Api {
   private http = inject(HttpClient);
 

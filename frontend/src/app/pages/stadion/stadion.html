@@ -1,26 +1,28 @@
 <h2>Stadioni</h2>
 
-<div class="card">
-  <h3>Dodaj stadion</h3>
-  <form class="inline-form" (ngSubmit)="dodaj()">
-    <div class="field">
-      <label>Naziv</label>
-      <input name="naziv" [(ngModel)]="forma.Naziv" required />
-    </div>
-    <div class="field">
-      <label>Grad</label>
-      <input name="grad" [(ngModel)]="forma.Grad" required />
-    </div>
-    <div class="field">
-      <label>Kapacitet</label>
-      <input type="number" name="kapacitet" [(ngModel)]="forma.Kapacitet" />
-    </div>
-    <button type="submit">Dodaj</button>
-  </form>
-  @if (greska()) {
-    <p class="error">{{ greska() }}</p>
-  }
-</div>
+@if (auth.admin()) {
+  <div class="card">
+    <h3>Dodaj stadion</h3>
+    <form class="inline-form" (ngSubmit)="dodaj()">
+      <div class="field">
+        <label>Naziv</label>
+        <input name="naziv" [(ngModel)]="forma.Naziv" required />
+      </div>
+      <div class="field">
+        <label>Grad</label>
+        <input name="grad" [(ngModel)]="forma.Grad" required />
+      </div>
+      <div class="field">
+        <label>Kapacitet</label>
+        <input type="number" name="kapacitet" [(ngModel)]="forma.Kapacitet" />
+      </div>
+      <button type="submit">Dodaj</button>
+    </form>
+    @if (greska()) {
+      <p class="error">{{ greska() }}</p>
+    }
+  </div>
+}
 
 <div class="card">
   <table>

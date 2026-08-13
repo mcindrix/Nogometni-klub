@@ -12,7 +12,7 @@ def popis_stadiona():
     return list(database.stadioni.values())
 
 
-@router.post("", response_model=schemas.StadionRead, status_code=201)
+@router.post("", response_model=schemas.StadionRead, status_code=201, dependencies=[Depends(samo_admin)])
 def dodaj_stadion(podaci: schemas.StadionCreate):
     sid = database.sljedeci_id("stadion")
     zapis = {"StadionID": sid, **podaci.model_dump()}

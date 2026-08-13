@@ -12,7 +12,7 @@ def popis_ekipa():
     return list(database.ekipe.values())
 
 
-@router.post("", response_model=schemas.EkipaRead, status_code=201)
+@router.post("", response_model=schemas.EkipaRead, status_code=201, dependencies=[Depends(samo_admin)])
 def dodaj_ekipu(podaci: schemas.EkipaCreate):
     eid = database.sljedeci_id("ekipa")
     zapis = {"EkipaID": eid, **podaci.model_dump()}

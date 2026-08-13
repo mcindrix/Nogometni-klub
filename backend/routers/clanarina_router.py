@@ -2,9 +2,9 @@ from fastapi import APIRouter, Depends, HTTPException
 
 import database
 import schemas
-from auth import samo_admin, trenutni_korisnik
+from auth import admin_ili_trener, samo_admin
 
-router = APIRouter(prefix="/api/clanarina", tags=["Clanarina"], dependencies=[Depends(trenutni_korisnik)])
+router = APIRouter(prefix="/api/clanarina", tags=["Clanarina"], dependencies=[Depends(admin_ili_trener)])
 
 
 def _spoji_igraca(igrac: dict) -> dict:

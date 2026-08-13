@@ -1,35 +1,37 @@
 <h2>Članarine</h2>
 
-<div class="card">
-  <h3>Dodaj članarinu</h3>
-  <form class="inline-form" (ngSubmit)="dodaj()">
-    <div class="field">
-      <label>Igrač</label>
-      <select name="igrac" [(ngModel)]="forma.IgracID" required>
-        <option [ngValue]="undefined" disabled>-- odaberi --</option>
-        @for (i of igraci(); track i.IgracID) {
-          <option [ngValue]="i.IgracID">{{ i.Ime }} {{ i.Prezime }}</option>
-        }
-      </select>
-    </div>
-    <div class="field">
-      <label>Iznos (EUR)</label>
-      <input type="number" step="0.01" name="iznos" [(ngModel)]="forma.Iznos" required />
-    </div>
-    <div class="field">
-      <label>Datum uplate</label>
-      <input type="date" name="datum" [(ngModel)]="forma.DatumUplate" required />
-    </div>
-    <div class="field">
-      <label>Razdoblje</label>
-      <input name="razdoblje" placeholder="npr. 2026-Q3" [(ngModel)]="forma.Razdoblje" />
-    </div>
-    <button type="submit">Dodaj</button>
-  </form>
-  @if (greska()) {
-    <p class="error">{{ greska() }}</p>
-  }
-</div>
+@if (auth.admin() || auth.trener()) {
+  <div class="card">
+    <h3>Dodaj članarinu</h3>
+    <form class="inline-form" (ngSubmit)="dodaj()">
+      <div class="field">
+        <label>Igrač</label>
+        <select name="igrac" [(ngModel)]="forma.IgracID" required>
+          <option [ngValue]="undefined" disabled>-- odaberi --</option>
+          @for (i of igraci(); track i.IgracID) {
+            <option [ngValue]="i.IgracID">{{ i.Ime }} {{ i.Prezime }}</option>
+          }
+        </select>
+      </div>
+      <div class="field">
+        <label>Iznos (EUR)</label>
+        <input type="number" step="0.01" name="iznos" [(ngModel)]="forma.Iznos" required />
+      </div>
+      <div class="field">
+        <label>Datum uplate</label>
+        <input type="date" name="datum" [(ngModel)]="forma.DatumUplate" required />
+      </div>
+      <div class="field">
+        <label>Razdoblje</label>
+        <input name="razdoblje" placeholder="npr. 2026-Q3" [(ngModel)]="forma.Razdoblje" />
+      </div>
+      <button type="submit">Dodaj</button>
+    </form>
+    @if (greska()) {
+      <p class="error">{{ greska() }}</p>
+    }
+  </div>
+}
 
 <div class="card">
   <table>

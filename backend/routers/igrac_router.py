@@ -28,7 +28,7 @@ def popis_igraca():
     return [_spoji(i) for i in database.igraci.values()]
 
 
-@router.post("", response_model=schemas.IgracRead, status_code=201)
+@router.post("", response_model=schemas.IgracRead, status_code=201, dependencies=[Depends(samo_admin)])
 def dodaj_igraca(podaci: schemas.IgracCreate):
     _provjeri_veze(podaci)
     iid = database.sljedeci_id("igrac")

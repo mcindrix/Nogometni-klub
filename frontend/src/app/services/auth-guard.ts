@@ -10,7 +10,8 @@ export const authGuard: CanActivateChildFn = (childRoute) => {
   if (!auth.prijavljen()) {
     return router.createUrlTree(['/login']);
   }
-  if (childRoute.data['samoAdmin'] && !auth.admin()) {
+  const dozvoljeneUloge: string[] | undefined = childRoute.data['dozvoljeneUloge'];
+  if (dozvoljeneUloge && !dozvoljeneUloge.includes(auth.uloga() ?? '')) {
     return router.createUrlTree(['/dashboard']);
   }
   return true;

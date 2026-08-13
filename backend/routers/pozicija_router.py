@@ -12,7 +12,7 @@ def popis_pozicija():
     return list(database.pozicije.values())
 
 
-@router.post("", response_model=schemas.PozicijaRead, status_code=201)
+@router.post("", response_model=schemas.PozicijaRead, status_code=201, dependencies=[Depends(samo_admin)])
 def dodaj_poziciju(podaci: schemas.PozicijaCreate):
     pid = database.sljedeci_id("pozicija")
     zapis = {"PozicijaID": pid, **podaci.model_dump()}

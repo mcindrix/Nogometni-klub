@@ -39,6 +39,7 @@ export const routes: Routes = [
       {
         path: 'clanarine',
         loadComponent: () => import('./pages/clanarina/clanarina').then((m) => m.Clanarina),
+        data: { dozvoljeneUloge: ['Admin', 'Trener'] },
       },
       {
         path: 'utakmice',

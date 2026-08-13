@@ -16,7 +16,9 @@
       <a routerLink="/stadioni" routerLinkActive="active">Stadioni</a>
       <a routerLink="/utakmice" routerLinkActive="active">Utakmice</a>
       <a routerLink="/treninzi" routerLinkActive="active">Treninzi</a>
-      <a routerLink="/clanarine" routerLinkActive="active">Članarine</a>
+      @if (auth.admin() || auth.trener()) {
+        <a routerLink="/clanarine" routerLinkActive="active">Članarine</a>
+      }
     </nav>
   </header>
 }

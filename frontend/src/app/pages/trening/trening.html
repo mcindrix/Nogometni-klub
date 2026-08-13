@@ -1,49 +1,51 @@
 <h2>Treninzi</h2>
 
-<div class="card">
-  <h3>Dodaj trening</h3>
-  <form class="inline-form" (ngSubmit)="dodaj()">
-    <div class="field">
-      <label>Ekipa</label>
-      <select name="ekipa" [(ngModel)]="forma.EkipaID" required>
-        <option [ngValue]="undefined" disabled>-- odaberi --</option>
-        @for (e of ekipe(); track e.EkipaID) {
-          <option [ngValue]="e.EkipaID">{{ e.Naziv }}</option>
-        }
-      </select>
-    </div>
-    <div class="field">
-      <label>Trener</label>
-      <select name="trener" [(ngModel)]="forma.TrenerID" required>
-        <option [ngValue]="undefined" disabled>-- odaberi --</option>
-        @for (t of treneri(); track t.TrenerID) {
-          <option [ngValue]="t.TrenerID">{{ t.Ime }} {{ t.Prezime }}</option>
-        }
-      </select>
-    </div>
-    <div class="field">
-      <label>Stadion</label>
-      <select name="stadion" [(ngModel)]="forma.StadionID">
-        <option [ngValue]="null">-- bez stadiona --</option>
-        @for (s of stadioni(); track s.StadionID) {
-          <option [ngValue]="s.StadionID">{{ s.Naziv }}</option>
-        }
-      </select>
-    </div>
-    <div class="field">
-      <label>Datum i vrijeme</label>
-      <input type="datetime-local" name="datum" [(ngModel)]="forma.DatumVrijeme" required />
-    </div>
-    <div class="field">
-      <label>Trajanje (min)</label>
-      <input type="number" name="trajanje" [(ngModel)]="forma.Trajanje" />
-    </div>
-    <button type="submit">Dodaj</button>
-  </form>
-  @if (greska()) {
-    <p class="error">{{ greska() }}</p>
-  }
-</div>
+@if (auth.admin() || auth.trener()) {
+  <div class="card">
+    <h3>Dodaj trening</h3>
+    <form class="inline-form" (ngSubmit)="dodaj()">
+      <div class="field">
+        <label>Ekipa</label>
+        <select name="ekipa" [(ngModel)]="forma.EkipaID" required>
+          <option [ngValue]="undefined" disabled>-- odaberi --</option>
+          @for (e of ekipe(); track e.EkipaID) {
+            <option [ngValue]="e.EkipaID">{{ e.Naziv }}</option>
+          }
+        </select>
+      </div>
+      <div class="field">
+        <label>Trener</label>
+        <select name="trener" [(ngModel)]="forma.TrenerID" required>
+          <option [ngValue]="undefined" disabled>-- odaberi --</option>
+          @for (t of treneri(); track t.TrenerID) {
+            <option [ngValue]="t.TrenerID">{{ t.Ime }} {{ t.Prezime }}</option>
+          }
+        </select>
+      </div>
+      <div class="field">
+        <label>Stadion</label>
+        <select name="stadion" [(ngModel)]="forma.StadionID">
+          <option [ngValue]="null">-- bez stadiona --</option>
+          @for (s of stadioni(); track s.StadionID) {
+            <option [ngValue]="s.StadionID">{{ s.Naziv }}</option>
+          }
+        </select>
+      </div>
+      <div class="field">
+        <label>Datum i vrijeme</label>
+        <input type="datetime-local" name="datum" [(ngModel)]="forma.DatumVrijeme" required />
+      </div>
+      <div class="field">
+        <label>Trajanje (min)</label>
+        <input type="number" name="trajanje" [(ngModel)]="forma.Trajanje" />
+      </div>
+      <button type="submit">Dodaj</button>
+    </form>
+    @if (greska()) {
+      <p class="error">{{ greska() }}</p>
+    }
+  </div>
+}
 
 <div class="card">
   <table>

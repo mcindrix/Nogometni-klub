@@ -17,12 +17,12 @@ TRAJANJE_TOKENA_MIN = 8 * 60
 
 KORISNICI = {
     "admin": {"Lozinka": "admin123", "Uloga": "Admin"},
-    "trener": {"Lozinka": "trener123", "Uloga": "Trener", TrenerID: 1},
-    "igrac1": {"Lozinka": "igrac123", "Uloga": "Igrac", IgracID: 1},
-    "igrac2": {"Lozinka": "igrac123", "Uloga": "Igrac", IgracID: 2},
-    "igrac3": {"Lozinka": "igrac123", "Uloga": "Igrac", IgracID: 3},
-    "igrac4": {"Lozinka": "igrac123", "Uloga": "Igrac", IgracID: 4},
-    "igrac5": {"Lozinka": "igrac123", "Uloga": "Igrac", IgracID: 5},
+    "trener": {"Lozinka": "trener123", "Uloga": "Trener", "TrenerID": 1},
+    "igrac1": {"Lozinka": "igrac123", "Uloga": "Igrac", "IgracID": 1},
+    "igrac2": {"Lozinka": "igrac123", "Uloga": "Igrac", "IgracID": 2},
+    "igrac3": {"Lozinka": "igrac123", "Uloga": "Igrac", "IgracID": 3},
+    "igrac4": {"Lozinka": "igrac123", "Uloga": "Igrac", "IgracID": 4},
+    "igrac5": {"Lozinka": "igrac123", "Uloga": "Igrac", "IgracID": 5},
 }
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/login", auto_error=False)
@@ -67,4 +67,10 @@ def samo_trener(korisnik: dict = Depends(trenutni_korisnik)) -> dict:
 def samo_igrac(korisnik: dict = Depends(trenutni_korisnik)) -> dict:
     if korisnik["Uloga"] != "Igrac":
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Potrebna je Igrac uloga")
+    return korisnik
+
+
+def admin_ili_trener(korisnik: dict = Depends(trenutni_korisnik)) -> dict:
+    if korisnik["Uloga"] not in ("Admin", "Trener"):
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Potrebna je Admin ili Trener uloga")
     return korisnik

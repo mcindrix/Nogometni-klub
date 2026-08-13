@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Service, computed, inject, signal } from '@angular/core';
+import { Injectable, computed, inject, signal } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 
 import { PrijavaOdgovor } from '../models/models';
@@ -13,7 +13,9 @@ interface SpremljenaPrijava {
   uloga: string;
 }
 
-@Service()
+@Injectable({
+  providedIn:'root'
+})
 export class Auth {
   private http = inject(HttpClient);
 
@@ -24,6 +26,8 @@ export class Auth {
 
   prijavljen = computed(() => !!this.token());
   admin = computed(() => this.uloga() === 'Admin');
+  trener = computed(() => this.uloga() === 'Trener');
+  igrac = computed(() => this.uloga() === 'Igrac');
 
   prijava(korisnickoIme: string, lozinka: string): Observable<PrijavaOdgovor> {
     return this.http

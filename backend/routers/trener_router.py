@@ -12,7 +12,7 @@ def popis_trenera():
     return list(database.treneri.values())
 
 
-@router.post("", response_model=schemas.TrenerRead, status_code=201)
+@router.post("", response_model=schemas.TrenerRead, status_code=201, dependencies=[Depends(samo_admin)])
 def dodaj_trenera(podaci: schemas.TrenerCreate):
     tid = database.sljedeci_id("trener")
     zapis = {"TrenerID": tid, **podaci.model_dump()}

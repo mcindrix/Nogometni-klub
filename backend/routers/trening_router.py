@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 
 import database
 import schemas
-from auth import samo_admin, trenutni_korisnik
+from auth import admin_ili_trener, samo_admin, trenutni_korisnik
 
 router = APIRouter(prefix="/api/trening", tags=["Trening"], dependencies=[Depends(trenutni_korisnik)])
 
@@ -31,7 +31,7 @@ def popis_treninga():
     return [_spoji(t) for t in treninzi]
 
 
-@router.post("", response_model=schemas.TreningRead, status_code=201)
+@router.post("", response_model=schemas.TreningRead, status_code=201, dependencies=[Depends(admin_ili_trener)])
 def dodaj_trening(podaci: schemas.TreningCreate):
     _provjeri_veze(podaci)
     trid = database.sljedeci_id("trening")
