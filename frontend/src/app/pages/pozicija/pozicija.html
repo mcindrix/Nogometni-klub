@@ -1,0 +1,46 @@
+<h2>Pozicije</h2>
+
+<div class="card">
+  <h3>Dodaj poziciju</h3>
+  <form class="inline-form" (ngSubmit)="dodaj()">
+    <div class="field">
+      <label>Naziv</label>
+      <input name="naziv" [(ngModel)]="forma.Naziv" required />
+    </div>
+    <div class="field">
+      <label>Opis</label>
+      <input name="opis" [(ngModel)]="forma.Opis" />
+    </div>
+    <button type="submit">Dodaj</button>
+  </form>
+  @if (greska()) {
+    <p class="error">{{ greska() }}</p>
+  }
+</div>
+
+<div class="card">
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Naziv</th>
+        <th>Opis</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (p of pozicije(); track p.PozicijaID) {
+        <tr>
+          <td>{{ p.PozicijaID }}</td>
+          <td>{{ p.Naziv }}</td>
+          <td>{{ p.Opis }}</td>
+          <td>
+            @if (auth.admin()) {
+              <button class="danger" (click)="obrisi(p.PozicijaID)">Obriši</button>
+            }
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

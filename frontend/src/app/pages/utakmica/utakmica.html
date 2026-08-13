@@ -1,0 +1,84 @@
+<h2>Utakmice</h2>
+
+<div class="card">
+  <h3>Dodaj utakmicu</h3>
+  <form class="inline-form" (ngSubmit)="dodaj()">
+    <div class="field">
+      <label>Ekipa</label>
+      <select name="ekipa" [(ngModel)]="forma.EkipaID" required>
+        <option [ngValue]="undefined" disabled>-- odaberi --</option>
+        @for (e of ekipe(); track e.EkipaID) {
+          <option [ngValue]="e.EkipaID">{{ e.Naziv }}</option>
+        }
+      </select>
+    </div>
+    <div class="field">
+      <label>Protivnik</label>
+      <input name="protivnik" [(ngModel)]="forma.Protivnik" required />
+    </div>
+    <div class="field">
+      <label>Stadion</label>
+      <select name="stadion" [(ngModel)]="forma.StadionID" required>
+        <option [ngValue]="undefined" disabled>-- odaberi --</option>
+        @for (s of stadioni(); track s.StadionID) {
+          <option [ngValue]="s.StadionID">{{ s.Naziv }} ({{ s.Grad }})</option>
+        }
+      </select>
+    </div>
+    <div class="field">
+      <label>Datum i vrijeme</label>
+      <input type="datetime-local" name="datum" [(ngModel)]="forma.DatumVrijeme" required />
+    </div>
+    <div class="field">
+      <label>Rezultat (mi)</label>
+      <input type="number" min="0" name="rezNas" [(ngModel)]="forma.RezultatNas" />
+    </div>
+    <div class="field">
+      <label>Rezultat (protivnik)</label>
+      <input type="number" min="0" name="rezProtiv" [(ngModel)]="forma.RezultatProtivnik" />
+    </div>
+    <button type="submit">Dodaj</button>
+  </form>
+  @if (greska()) {
+    <p class="error">{{ greska() }}</p>
+  }
+</div>
+
+<div class="card">
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Ekipa</th>
+        <th>Protivnik</th>
+        <th>Stadion</th>
+        <th>Datum</th>
+        <th>Rezultat</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (u of utakmice(); track u.UtakmicaID) {
+        <tr>
+          <td>{{ u.UtakmicaID }}</td>
+          <td>{{ u.ekipa?.Naziv }}</td>
+          <td>{{ u.Protivnik }}</td>
+          <td>{{ u.stadion?.Naziv }}</td>
+          <td>{{ u.DatumVrijeme }}</td>
+          <td>
+            @if (u.RezultatNas !== null && u.RezultatProtivnik !== null) {
+              {{ u.RezultatNas }} : {{ u.RezultatProtivnik }}
+            } @else {
+              zakazana
+            }
+          </td>
+          <td>
+            @if (auth.admin()) {
+              <button class="danger" (click)="obrisi(u.UtakmicaID)">Obriši</button>
+            }
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

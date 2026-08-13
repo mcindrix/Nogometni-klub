@@ -1,0 +1,33 @@
+<h2>Pregled kluba</h2>
+@if (statistika(); as s) {
+  <div class="grid">
+    <div class="card stat">
+      <div class="value">{{ s.brojIgraca }}</div>
+      <div class="label">Igrača</div>
+    </div>
+    <div class="card stat">
+      <div class="value">{{ s.brojEkipa }}</div>
+      <div class="label">Ekipa</div>
+    </div>
+    <div class="card stat">
+      <div class="value">{{ s.brojTrenera }}</div>
+      <div class="label">Trenera</div>
+    </div>
+    <div class="card stat">
+      <div class="value">{{ s.brojUtakmica }}</div>
+      <div class="label">Utakmica</div>
+    </div>
+    <div class="card stat">
+      <div class="value">{{ s.brojTreninga }}</div>
+      <div class="label">Treninga</div>
+    </div>
+    <div class="card stat">
+      <div class="value">{{ s.ukupnoClanarina | currency: 'EUR' }}</div>
+      <div class="label">Naplaćene članarine</div>
+    </div>
+  </div>
+} @else if (greska()) {
+  <p class="error">{{ greska() }}</p>
+} @else {
+  <p class="muted">Učitavanje...</p>
+}

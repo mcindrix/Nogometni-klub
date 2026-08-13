@@ -1,0 +1,25 @@
+@if (auth.prijavljen()) {
+  <header class="topbar">
+    <div class="topbar-row">
+      <h1>⚽ Nogometni klub</h1>
+      <div class="user-box">
+        <span>{{ auth.korisnickoIme() }} ({{ auth.uloga() }})</span>
+        <button (click)="odjava()">Odjava</button>
+      </div>
+    </div>
+    <nav>
+      <a routerLink="/dashboard" routerLinkActive="active">Početna</a>
+      <a routerLink="/igraci" routerLinkActive="active">Igrači</a>
+      <a routerLink="/ekipe" routerLinkActive="active">Ekipe</a>
+      <a routerLink="/treneri" routerLinkActive="active">Treneri</a>
+      <a routerLink="/pozicije" routerLinkActive="active">Pozicije</a>
+      <a routerLink="/stadioni" routerLinkActive="active">Stadioni</a>
+      <a routerLink="/utakmice" routerLinkActive="active">Utakmice</a>
+      <a routerLink="/treninzi" routerLinkActive="active">Treninzi</a>
+      <a routerLink="/clanarine" routerLinkActive="active">Članarine</a>
+    </nav>
+  </header>
+}
+<main class="content">
+  <router-outlet></router-outlet>
+</main>

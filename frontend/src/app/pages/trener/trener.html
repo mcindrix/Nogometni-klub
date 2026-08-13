@@ -1,0 +1,58 @@
+<h2>Treneri</h2>
+
+<div class="card">
+  <h3>Dodaj trenera</h3>
+  <form class="inline-form" (ngSubmit)="dodaj()">
+    <div class="field">
+      <label>Ime</label>
+      <input name="ime" [(ngModel)]="forma.Ime" required />
+    </div>
+    <div class="field">
+      <label>Prezime</label>
+      <input name="prezime" [(ngModel)]="forma.Prezime" required />
+    </div>
+    <div class="field">
+      <label>Licenca</label>
+      <input name="licenca" [(ngModel)]="forma.Licenca" placeholder="npr. UEFA A" />
+    </div>
+    <div class="field">
+      <label>Datum rođenja</label>
+      <input type="date" name="datum" [(ngModel)]="forma.DatumRodjenja" />
+    </div>
+    <button type="submit">Dodaj</button>
+  </form>
+  @if (greska()) {
+    <p class="error">{{ greska() }}</p>
+  }
+</div>
+
+<div class="card">
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Ime</th>
+        <th>Prezime</th>
+        <th>Licenca</th>
+        <th>Datum rođenja</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (t of treneri(); track t.TrenerID) {
+        <tr>
+          <td>{{ t.TrenerID }}</td>
+          <td>{{ t.Ime }}</td>
+          <td>{{ t.Prezime }}</td>
+          <td>{{ t.Licenca ?? '-' }}</td>
+          <td>{{ t.DatumRodjenja }}</td>
+          <td>
+            @if (auth.admin()) {
+              <button class="danger" (click)="obrisi(t.TrenerID)">Obriši</button>
+            }
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

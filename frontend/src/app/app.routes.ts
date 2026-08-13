@@ -1,0 +1,54 @@
+import { Routes } from '@angular/router';
+
+import { authGuard } from './services/auth-guard';
+
+export const routes: Routes = [
+  {
+    path: 'login',
+    loadComponent: () => import('./pages/login/login').then((m) => m.Login),
+  },
+  {
+    path: '',
+    canActivateChild: [authGuard],
+    children: [
+      { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
+      {
+        path: 'dashboard',
+        loadComponent: () => import('./pages/dashboard/dashboard').then((m) => m.Dashboard),
+      },
+      {
+        path: 'pozicije',
+        loadComponent: () => import('./pages/pozicija/pozicija').then((m) => m.Pozicija),
+      },
+      {
+        path: 'stadioni',
+        loadComponent: () => import('./pages/stadion/stadion').then((m) => m.Stadion),
+      },
+      {
+        path: 'treneri',
+        loadComponent: () => import('./pages/trener/trener').then((m) => m.Trener),
+      },
+      {
+        path: 'ekipe',
+        loadComponent: () => import('./pages/ekipa/ekipa').then((m) => m.Ekipa),
+      },
+      {
+        path: 'igraci',
+        loadComponent: () => import('./pages/igrac/igrac').then((m) => m.Igrac),
+      },
+      {
+        path: 'clanarine',
+        loadComponent: () => import('./pages/clanarina/clanarina').then((m) => m.Clanarina),
+      },
+      {
+        path: 'utakmice',
+        loadComponent: () => import('./pages/utakmica/utakmica').then((m) => m.Utakmica),
+      },
+      {
+        path: 'treninzi',
+        loadComponent: () => import('./pages/trening/trening').then((m) => m.Trening),
+      },
+      { path: '**', redirectTo: 'dashboard' },
+    ],
+  },
+];

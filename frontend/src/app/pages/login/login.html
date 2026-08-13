@@ -1,0 +1,18 @@
+<div class="login-wrap">
+  <form class="card login-card" (ngSubmit)="prijava()">
+    <h2>Prijava</h2>
+    <div class="field">
+      <label>Korisničko ime</label>
+      <input name="korisnickoIme" [(ngModel)]="korisnickoIme" required autofocus />
+    </div>
+    <div class="field">
+      <label>Lozinka</label>
+      <input type="password" name="lozinka" [(ngModel)]="lozinka" required />
+    </div>
+    <button type="submit">Prijavi se</button>
+    @if (greska()) {
+      <p class="error">{{ greska() }}</p>
+    }
+    <p class="muted">Demo: admin / admin123 (Admin) ili korisnik / korisnik123 (Korisnik)</p>
+  </form>
+</div>
