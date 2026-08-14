@@ -1,5 +1,7 @@
 # Nogometni-klub
 
+![Prijava](screenshots/login.png)
+
 ## Ideja
 Upravljanje financijama, igračima, treninzima, trenerima nogometnog kluba i slično, kroz web aplikaciju.
 
@@ -38,6 +40,25 @@ Frontend je na `http://localhost:4200`, backend na `http://localhost:8000` (doku
 | `admin` | `admin123` | Admin |
 | `trener` | `trener123` | Trener |
 | `igrac1` – `igrac5` | `igrac123` | Igrač |
+
+## Screenshotovi
+
+### Admin
+
+![Admin - Početna](screenshots/admin-pocetna.png)
+![Admin - Treninzi](screenshots/admin-treninzi.png)
+![Admin - Članarine](screenshots/admin-clanarine.png)
+
+### Trener
+
+![Trener - Početna](screenshots/trener-pocetna.png)
+![Trener - Treninzi](screenshots/trener-treninzi.png)
+![Trener - Članarine](screenshots/trener-clanarine.png)
+
+### Igrač
+
+![Igrač - Početna](screenshots/igrac-pocetna.png)
+![Igrač - Treninzi](screenshots/igrac-treninzi.png)
 
 ## Uloge i pristupi
 
