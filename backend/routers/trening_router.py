@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 
 import database
 import schemas
-from auth import admin_ili_trener, samo_admin, trenutni_korisnik
+from auth import admin_ili_trener, samo_admin, samo_igrac, trenutni_korisnik
 
 router = APIRouter(prefix="/api/trening", tags=["Trening"], dependencies=[Depends(trenutni_korisnik)])
 
@@ -38,6 +38,16 @@ def dodaj_trening(podaci: schemas.TreningCreate):
     zapis = {"TreningID": trid, **podaci.model_dump()}
     database.treninzi[trid] = zapis
     return _spoji(zapis)
+
+
+@router.get("/moji", response_model=list[schemas.TreningRead])
+def moji_treninzi(korisnik: dict = Depends(samo_igrac)):
+    igrac = database.igraci[korisnik["IgracID"]]
+    treninzi = sorted(
+        (t for t in database.treninzi.values() if t["EkipaID"] == igrac["EkipaID"]),
+        key=lambda t: t["DatumVrijeme"],
+    )
+    return [_spoji(t) for t in treninzi]
 
 
 @router.get("/{trening_id}", response_model=schemas.TreningRead)

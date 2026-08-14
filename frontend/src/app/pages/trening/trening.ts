@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { Api } from '../../services/api';
@@ -28,15 +28,27 @@ export class Trening implements OnInit {
     Trajanje: null,
   };
 
+  prosli = computed(() =>
+    this.treninzi().filter((t) => new Date(t.DatumVrijeme) < new Date()),
+  );
+  dolazeci = computed(() =>
+    this.treninzi()
+      .filter((t) => new Date(t.DatumVrijeme) >= new Date())
+      .sort((a, b) => new Date(a.DatumVrijeme).getTime() - new Date(b.DatumVrijeme).getTime()),
+  );
+
   ngOnInit(): void {
     this.ucitaj();
-    this.api.getEkipe().subscribe((podaci) => this.ekipe.set(podaci));
-    this.api.getTrenere().subscribe((podaci) => this.treneri.set(podaci));
-    this.api.getStadione().subscribe((podaci) => this.stadioni.set(podaci));
+    if (!this.auth.igrac()) {
+      this.api.getEkipe().subscribe((podaci) => this.ekipe.set(podaci));
+      this.api.getTrenere().subscribe((podaci) => this.treneri.set(podaci));
+      this.api.getStadione().subscribe((podaci) => this.stadioni.set(podaci));
+    }
   }
 
   ucitaj(): void {
-    this.api.getTreninge().subscribe((podaci) => this.treninzi.set(podaci));
+    const izvor = this.auth.igrac() ? this.api.getMojiTreninzi() : this.api.getTreninge();
+    izvor.subscribe((podaci) => this.treninzi.set(podaci));
   }
 
   dodaj(): void {

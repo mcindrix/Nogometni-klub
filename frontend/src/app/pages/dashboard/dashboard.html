@@ -21,10 +21,12 @@
       <div class="value">{{ s.brojTreninga }}</div>
       <div class="label">Treninga</div>
     </div>
-    <div class="card stat">
-      <div class="value">{{ s.ukupnoClanarina | currency: 'EUR' }}</div>
-      <div class="label">Naplaćene članarine</div>
-    </div>
+    @if (!auth.igrac()) {
+      <div class="card stat">
+        <div class="value">{{ s.ukupnoClanarina | currency: 'EUR' }}</div>
+        <div class="label">Naplaćene članarine</div>
+      </div>
+    }
   </div>
 } @else if (greska()) {
   <p class="error">{{ greska() }}</p>

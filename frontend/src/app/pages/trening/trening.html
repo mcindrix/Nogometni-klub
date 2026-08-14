@@ -47,35 +47,91 @@
   </div>
 }
 
-<div class="card">
-  <table>
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Ekipa</th>
-        <th>Trener</th>
-        <th>Stadion</th>
-        <th>Datum</th>
-        <th>Trajanje (min)</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      @for (t of treninzi(); track t.TreningID) {
+@if (auth.igrac()) {
+  <div class="card">
+    <h3>Dolazeći treninzi</h3>
+    @if (dolazeci().length === 0) {
+      <p class="muted">Nema zakazanih treninga.</p>
+    } @else {
+      <table>
+        <thead>
+          <tr>
+            <th>Datum</th>
+            <th>Trener</th>
+            <th>Stadion</th>
+            <th>Trajanje (min)</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (t of dolazeci(); track t.TreningID) {
+            <tr>
+              <td>{{ t.DatumVrijeme }}</td>
+              <td>{{ t.trener?.Ime }} {{ t.trener?.Prezime }}</td>
+              <td>{{ t.stadion?.Naziv ?? '-' }}</td>
+              <td>{{ t.Trajanje }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  </div>
+
+  <div class="card">
+    <h3>Prošli treninzi</h3>
+    @if (prosli().length === 0) {
+      <p class="muted">Nema odrađenih treninga.</p>
+    } @else {
+      <table>
+        <thead>
+          <tr>
+            <th>Datum</th>
+            <th>Trener</th>
+            <th>Stadion</th>
+            <th>Trajanje (min)</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (t of prosli(); track t.TreningID) {
+            <tr>
+              <td>{{ t.DatumVrijeme }}</td>
+              <td>{{ t.trener?.Ime }} {{ t.trener?.Prezime }}</td>
+              <td>{{ t.stadion?.Naziv ?? '-' }}</td>
+              <td>{{ t.Trajanje }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  </div>
+} @else {
+  <div class="card">
+    <table>
+      <thead>
         <tr>
-          <td>{{ t.TreningID }}</td>
-          <td>{{ t.ekipa?.Naziv }}</td>
-          <td>{{ t.trener?.Ime }} {{ t.trener?.Prezime }}</td>
-          <td>{{ t.stadion?.Naziv ?? '-' }}</td>
-          <td>{{ t.DatumVrijeme }}</td>
-          <td>{{ t.Trajanje }}</td>
-          <td>
-            @if (auth.admin()) {
-              <button class="danger" (click)="obrisi(t.TreningID)">Obriši</button>
-            }
-          </td>
+          <th>Ekipa</th>
+          <th>Trener</th>
+          <th>Stadion</th>
+          <th>Datum</th>
+          <th>Trajanje (min)</th>
+          <th></th>
         </tr>
-      }
-    </tbody>
-  </table>
-</div>
+      </thead>
+      <tbody>
+        @for (t of treninzi(); track t.TreningID) {
+          <tr>
+            <td>{{ t.ekipa?.Naziv }}</td>
+            <td>{{ t.trener?.Ime }} {{ t.trener?.Prezime }}</td>
+            <td>{{ t.stadion?.Naziv ?? '-' }}</td>
+            <td>{{ t.DatumVrijeme }}</td>
+            <td>{{ t.Trajanje }}</td>
+            <td>
+              @if (auth.admin()) {
+                <button class="danger" (click)="obrisi(t.TreningID)">Obriši</button>
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+}

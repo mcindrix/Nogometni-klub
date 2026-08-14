@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 
 import database
 import schemas
-from auth import samo_admin, trenutni_korisnik
+from auth import admin_ili_trener, samo_admin, samo_igrac, trenutni_korisnik
 
 router = APIRouter(prefix="/api/utakmica", tags=["Utakmica"], dependencies=[Depends(trenutni_korisnik)])
 
@@ -28,13 +28,23 @@ def popis_utakmica():
     return [_spoji(u) for u in utakmice]
 
 
-@router.post("", response_model=schemas.UtakmicaRead, status_code=201, dependencies=[Depends(samo_admin)])
+@router.post("", response_model=schemas.UtakmicaRead, status_code=201, dependencies=[Depends(admin_ili_trener)])
 def dodaj_utakmicu(podaci: schemas.UtakmicaCreate):
     _provjeri_veze(podaci)
     uid = database.sljedeci_id("utakmica")
     zapis = {"UtakmicaID": uid, **podaci.model_dump()}
     database.utakmice[uid] = zapis
     return _spoji(zapis)
+
+
+@router.get("/moje", response_model=list[schemas.UtakmicaRead])
+def moje_utakmice(korisnik: dict = Depends(samo_igrac)):
+    igrac = database.igraci[korisnik["IgracID"]]
+    utakmice = sorted(
+        (u for u in database.utakmice.values() if u["EkipaID"] == igrac["EkipaID"]),
+        key=lambda u: u["DatumVrijeme"],
+    )
+    return [_spoji(u) for u in utakmice]
 
 
 @router.get("/{utakmica_id}", response_model=schemas.UtakmicaRead)

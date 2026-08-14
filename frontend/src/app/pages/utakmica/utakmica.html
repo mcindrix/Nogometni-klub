@@ -1,6 +1,6 @@
 <h2>Utakmice</h2>
 
-@if (auth.admin()) {
+@if (auth.admin() || auth.trener()) {
   <div class="card">
     <h3>Dodaj utakmicu</h3>
     <form class="inline-form" (ngSubmit)="dodaj()">
@@ -46,41 +46,101 @@
   </div>
 }
 
-<div class="card">
-  <table>
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Ekipa</th>
-        <th>Protivnik</th>
-        <th>Stadion</th>
-        <th>Datum</th>
-        <th>Rezultat</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      @for (u of utakmice(); track u.UtakmicaID) {
+@if (auth.igrac()) {
+  <div class="card">
+    <h3>Nadolazeće utakmice</h3>
+    @if (nadolazece().length === 0) {
+      <p class="muted">Nema zakazanih utakmica.</p>
+    } @else {
+      <table>
+        <thead>
+          <tr>
+            <th>Protivnik</th>
+            <th>Stadion</th>
+            <th>Datum</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (u of nadolazece(); track u.UtakmicaID) {
+            <tr>
+              <td>{{ u.Protivnik }}</td>
+              <td>{{ u.stadion?.Naziv }}</td>
+              <td>{{ u.DatumVrijeme }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  </div>
+
+  <div class="card">
+    <h3>Odigrane utakmice</h3>
+    @if (odigrane().length === 0) {
+      <p class="muted">Nema odigranih utakmica.</p>
+    } @else {
+      <table>
+        <thead>
+          <tr>
+            <th>Protivnik</th>
+            <th>Stadion</th>
+            <th>Datum</th>
+            <th>Rezultat</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (u of odigrane(); track u.UtakmicaID) {
+            <tr>
+              <td>{{ u.Protivnik }}</td>
+              <td>{{ u.stadion?.Naziv }}</td>
+              <td>{{ u.DatumVrijeme }}</td>
+              <td>
+                @if (u.RezultatNas !== null && u.RezultatProtivnik !== null) {
+                  {{ u.RezultatNas }} : {{ u.RezultatProtivnik }}
+                } @else {
+                  -
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  </div>
+} @else {
+  <div class="card">
+    <table>
+      <thead>
         <tr>
-          <td>{{ u.UtakmicaID }}</td>
-          <td>{{ u.ekipa?.Naziv }}</td>
-          <td>{{ u.Protivnik }}</td>
-          <td>{{ u.stadion?.Naziv }}</td>
-          <td>{{ u.DatumVrijeme }}</td>
-          <td>
-            @if (u.RezultatNas !== null && u.RezultatProtivnik !== null) {
-              {{ u.RezultatNas }} : {{ u.RezultatProtivnik }}
-            } @else {
-              zakazana
-            }
-          </td>
-          <td>
-            @if (auth.admin()) {
-              <button class="danger" (click)="obrisi(u.UtakmicaID)">Obriši</button>
-            }
-          </td>
+          <th>Ekipa</th>
+          <th>Protivnik</th>
+          <th>Stadion</th>
+          <th>Datum</th>
+          <th>Rezultat</th>
+          <th></th>
         </tr>
-      }
-    </tbody>
-  </table>
-</div>
+      </thead>
+      <tbody>
+        @for (u of utakmice(); track u.UtakmicaID) {
+          <tr>
+            <td>{{ u.ekipa?.Naziv }}</td>
+            <td>{{ u.Protivnik }}</td>
+            <td>{{ u.stadion?.Naziv }}</td>
+            <td>{{ u.DatumVrijeme }}</td>
+            <td>
+              @if (u.RezultatNas !== null && u.RezultatProtivnik !== null) {
+                {{ u.RezultatNas }} : {{ u.RezultatProtivnik }}
+              } @else {
+                zakazana
+              }
+            </td>
+            <td>
+              @if (auth.admin()) {
+                <button class="danger" (click)="obrisi(u.UtakmicaID)">Obriši</button>
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+}

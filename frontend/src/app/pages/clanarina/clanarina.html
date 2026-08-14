@@ -37,7 +37,6 @@
   <table>
     <thead>
       <tr>
-        <th>ID</th>
         <th>Igrač</th>
         <th>Iznos</th>
         <th>Datum uplate</th>
@@ -48,7 +47,6 @@
     <tbody>
       @for (c of clanarine(); track c.ClanarinaID) {
         <tr>
-          <td>{{ c.ClanarinaID }}</td>
           <td>{{ c.igrac?.Ime }} {{ c.igrac?.Prezime }}</td>
           <td>{{ c.Iznos | currency: 'EUR' }}</td>
           <td>{{ c.DatumUplate }}</td>

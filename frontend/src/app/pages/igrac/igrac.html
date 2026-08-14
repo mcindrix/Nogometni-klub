@@ -46,7 +46,6 @@
   <table>
     <thead>
       <tr>
-        <th>ID</th>
         <th>Ime</th>
         <th>Prezime</th>
         <th>Datum rođenja</th>
@@ -58,7 +57,6 @@
     <tbody>
       @for (i of igraci(); track i.IgracID) {
         <tr>
-          <td>{{ i.IgracID }}</td>
           <td>{{ i.Ime }}</td>
           <td>{{ i.Prezime }}</td>
           <td>{{ i.DatumRodjenja }}</td>

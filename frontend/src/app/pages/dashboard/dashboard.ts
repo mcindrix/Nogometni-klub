@@ -2,6 +2,7 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
 
 import { Api } from '../../services/api';
+import { Auth } from '../../services/auth';
 import { DashboardStatistika } from '../../models/models';
 
 @Component({
@@ -12,6 +13,7 @@ import { DashboardStatistika } from '../../models/models';
 })
 export class Dashboard implements OnInit {
   private api = inject(Api);
+  auth = inject(Auth);
 
   statistika = signal<DashboardStatistika | null>(null);
   greska = signal<string | null>(null);

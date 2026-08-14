@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { Api } from '../../services/api';
@@ -28,14 +28,26 @@ export class Utakmica implements OnInit {
     RezultatProtivnik: null,
   };
 
+  odigrane = computed(() =>
+    this.utakmice().filter((u) => new Date(u.DatumVrijeme) < new Date()),
+  );
+  nadolazece = computed(() =>
+    this.utakmice()
+      .filter((u) => new Date(u.DatumVrijeme) >= new Date())
+      .sort((a, b) => new Date(a.DatumVrijeme).getTime() - new Date(b.DatumVrijeme).getTime()),
+  );
+
   ngOnInit(): void {
     this.ucitaj();
-    this.api.getEkipe().subscribe((podaci) => this.ekipe.set(podaci));
-    this.api.getStadione().subscribe((podaci) => this.stadioni.set(podaci));
+    if (!this.auth.igrac()) {
+      this.api.getEkipe().subscribe((podaci) => this.ekipe.set(podaci));
+      this.api.getStadione().subscribe((podaci) => this.stadioni.set(podaci));
+    }
   }
 
   ucitaj(): void {
-    this.api.getUtakmice().subscribe((podaci) => this.utakmice.set(podaci));
+    const izvor = this.auth.igrac() ? this.api.getMojeUtakmice() : this.api.getUtakmice();
+    izvor.subscribe((podaci) => this.utakmice.set(podaci));
   }
 
   dodaj(): void {

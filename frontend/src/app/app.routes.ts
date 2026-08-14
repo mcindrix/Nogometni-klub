@@ -17,24 +17,24 @@ export const routes: Routes = [
         loadComponent: () => import('./pages/dashboard/dashboard').then((m) => m.Dashboard),
       },
       {
-        path: 'pozicije',
-        loadComponent: () => import('./pages/pozicija/pozicija').then((m) => m.Pozicija),
-      },
-      {
         path: 'stadioni',
         loadComponent: () => import('./pages/stadion/stadion').then((m) => m.Stadion),
+        data: { dozvoljeneUloge: ['Admin'] },
       },
       {
         path: 'treneri',
         loadComponent: () => import('./pages/trener/trener').then((m) => m.Trener),
+        data: { dozvoljeneUloge: ['Admin'] },
       },
       {
         path: 'ekipe',
         loadComponent: () => import('./pages/ekipa/ekipa').then((m) => m.Ekipa),
+        data: { dozvoljeneUloge: ['Admin'] },
       },
       {
         path: 'igraci',
         loadComponent: () => import('./pages/igrac/igrac').then((m) => m.Igrac),
+        data: { dozvoljeneUloge: ['Admin', 'Trener'] },
       },
       {
         path: 'clanarine',

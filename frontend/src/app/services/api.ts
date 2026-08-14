@@ -98,10 +98,16 @@ export class Api {
   obrisiUtakmicu(id: number): Observable<void> {
     return this.http.delete<void>(`${BASE_URL}/utakmica/${id}`);
   }
+  getMojeUtakmice(): Observable<Utakmica[]> {
+    return this.http.get<Utakmica[]>(`${BASE_URL}/utakmica/moje`);
+  }
 
   // Trening
   getTreninge(): Observable<Trening[]> {
     return this.http.get<Trening[]>(`${BASE_URL}/trening`);
+  }
+  getMojiTreninzi(): Observable<Trening[]> {
+    return this.http.get<Trening[]>(`${BASE_URL}/trening/moji`);
   }
   dodajTrening(podaci: Partial<Trening>): Observable<Trening> {
     return this.http.post<Trening>(`${BASE_URL}/trening`, podaci);

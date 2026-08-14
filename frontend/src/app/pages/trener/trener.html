@@ -32,7 +32,6 @@
   <table>
     <thead>
       <tr>
-        <th>ID</th>
         <th>Ime</th>
         <th>Prezime</th>
         <th>Licenca</th>
@@ -43,7 +42,6 @@
     <tbody>
       @for (t of treneri(); track t.TrenerID) {
         <tr>
-          <td>{{ t.TrenerID }}</td>
           <td>{{ t.Ime }}</td>
           <td>{{ t.Prezime }}</td>
           <td>{{ t.Licenca ?? '-' }}</td>

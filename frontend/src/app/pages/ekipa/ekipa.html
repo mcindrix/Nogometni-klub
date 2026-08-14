@@ -24,7 +24,6 @@
   <table>
     <thead>
       <tr>
-        <th>ID</th>
         <th>Naziv</th>
         <th>Liga</th>
         <th></th>
@@ -33,7 +32,6 @@
     <tbody>
       @for (e of ekipe(); track e.EkipaID) {
         <tr>
-          <td>{{ e.EkipaID }}</td>
           <td>{{ e.Naziv }}</td>
           <td>{{ e.Liga }}</td>
           <td>

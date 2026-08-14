@@ -28,7 +28,6 @@
   <table>
     <thead>
       <tr>
-        <th>ID</th>
         <th>Naziv</th>
         <th>Grad</th>
         <th>Kapacitet</th>
@@ -38,7 +37,6 @@
     <tbody>
       @for (s of stadioni(); track s.StadionID) {
         <tr>
-          <td>{{ s.StadionID }}</td>
           <td>{{ s.Naziv }}</td>
           <td>{{ s.Grad }}</td>
           <td>{{ s.Kapacitet }}</td>
