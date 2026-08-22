@@ -65,7 +65,7 @@
             <tr>
               <td>{{ u.Protivnik }}</td>
               <td>{{ u.stadion?.Naziv }}</td>
-              <td>{{ u.DatumVrijeme }}</td>
+              <td>{{ u.DatumVrijeme | date: 'dd.MM.yyyy. HH:mm' }}</td>
             </tr>
           }
         </tbody>
@@ -92,7 +92,7 @@
             <tr>
               <td>{{ u.Protivnik }}</td>
               <td>{{ u.stadion?.Naziv }}</td>
-              <td>{{ u.DatumVrijeme }}</td>
+              <td>{{ u.DatumVrijeme | date: 'dd.MM.yyyy. HH:mm' }}</td>
               <td>
                 @if (u.RezultatNas !== null && u.RezultatProtivnik !== null) {
                   {{ u.RezultatNas }} : {{ u.RezultatProtivnik }}
@@ -125,7 +125,7 @@
             <td>{{ u.ekipa?.Naziv }}</td>
             <td>{{ u.Protivnik }}</td>
             <td>{{ u.stadion?.Naziv }}</td>
-            <td>{{ u.DatumVrijeme }}</td>
+            <td>{{ u.DatumVrijeme | date: 'dd.MM.yyyy. HH:mm' }}</td>
             <td>
               @if (u.RezultatNas !== null && u.RezultatProtivnik !== null) {
                 {{ u.RezultatNas }} : {{ u.RezultatProtivnik }}

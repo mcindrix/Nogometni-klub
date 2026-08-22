@@ -65,7 +65,7 @@
         <tbody>
           @for (t of dolazeci(); track t.TreningID) {
             <tr>
-              <td>{{ t.DatumVrijeme }}</td>
+              <td>{{ t.DatumVrijeme | date: 'dd.MM.yyyy. HH:mm' }}</td>
               <td>{{ t.trener?.Ime }} {{ t.trener?.Prezime }}</td>
               <td>{{ t.stadion?.Naziv ?? '-' }}</td>
               <td>{{ t.Trajanje }}</td>
@@ -93,7 +93,7 @@
         <tbody>
           @for (t of prosli(); track t.TreningID) {
             <tr>
-              <td>{{ t.DatumVrijeme }}</td>
+              <td>{{ t.DatumVrijeme | date: 'dd.MM.yyyy. HH:mm' }}</td>
               <td>{{ t.trener?.Ime }} {{ t.trener?.Prezime }}</td>
               <td>{{ t.stadion?.Naziv ?? '-' }}</td>
               <td>{{ t.Trajanje }}</td>
@@ -122,7 +122,7 @@
             <td>{{ t.ekipa?.Naziv }}</td>
             <td>{{ t.trener?.Ime }} {{ t.trener?.Prezime }}</td>
             <td>{{ t.stadion?.Naziv ?? '-' }}</td>
-            <td>{{ t.DatumVrijeme }}</td>
+            <td>{{ t.DatumVrijeme | date: 'dd.MM.yyyy. HH:mm' }}</td>
             <td>{{ t.Trajanje }}</td>
             <td>
               @if (auth.admin()) {

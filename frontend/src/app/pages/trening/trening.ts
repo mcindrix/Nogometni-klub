@@ -1,4 +1,5 @@
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { Api } from '../../services/api';
@@ -7,7 +8,7 @@ import { Ekipa, Stadion, Trener, Trening as TreningModel } from '../../models/mo
 
 @Component({
   selector: 'app-trening',
-  imports: [FormsModule],
+  imports: [FormsModule, DatePipe],
   templateUrl: './trening.html',
   styleUrl: './trening.css',
 })
