@@ -5,6 +5,10 @@
 ## Ideja
 Upravljanje financijama, igračima, treninzima, trenerima nogometnog kluba i slično, kroz web aplikaciju.
 
+## Video pregled
+
+[Video pregled web aplikacije na YouTube-u](https://youtu.be/l3lwOvMs_IQ)
+
 ## Tehnologije
 
 - **Backend**: FastAPI (Python) - REST API, JWT prijava, podaci se drže u memoriji (nema baze podataka)

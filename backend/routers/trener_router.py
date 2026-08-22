@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 
 import database
 import schemas
-from auth import samo_admin, trenutni_korisnik
+from auth import samo_admin, samo_trener, trenutni_korisnik
 
 router = APIRouter(prefix="/api/trener", tags=["Trener"], dependencies=[Depends(trenutni_korisnik)])
 
@@ -10,6 +10,17 @@ router = APIRouter(prefix="/api/trener", tags=["Trener"], dependencies=[Depends(
 @router.get("", response_model=list[schemas.TrenerRead])
 def popis_trenera():
     return list(database.treneri.values())
+
+
+@router.get("/moj", response_model=schemas.TrenerRead)
+def moj_profil(korisnik: dict = Depends(samo_trener)):
+    return database.treneri[korisnik["TrenerID"]]
+
+
+@router.get("/moje-ekipe", response_model=list[schemas.EkipaRead])
+def moje_ekipe(korisnik: dict = Depends(samo_trener)):
+    ekipa_id_ovi = {t["EkipaID"] for t in database.treninzi.values() if t["TrenerID"] == korisnik["TrenerID"]}
+    return [database.ekipe[eid] for eid in ekipa_id_ovi if eid in database.ekipe]
 
 
 @router.post("", response_model=schemas.TrenerRead, status_code=201, dependencies=[Depends(samo_admin)])

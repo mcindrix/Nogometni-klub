@@ -1,0 +1,124 @@
+<h2>Moj profil</h2>
+
+@if (greska()) {
+  <p class="error">{{ greska() }}</p>
+}
+
+@if (auth.igrac() && igrac(); as i) {
+  <div class="card">
+    <h3>Osobni podaci</h3>
+    <div class="grid">
+      <div class="card stat">
+        <div class="value">{{ i.Ime }} {{ i.Prezime }}</div>
+        <div class="label">Ime i prezime</div>
+      </div>
+      <div class="card stat">
+        <div class="value">{{ i.pozicija?.Naziv ?? '-' }}</div>
+        <div class="label">Pozicija</div>
+      </div>
+      <div class="card stat">
+        <div class="value">{{ i.DatumRodjenja | date: 'dd.MM.yyyy.' }}</div>
+        <div class="label">Datum rođenja</div>
+      </div>
+      <div class="card stat">
+        <div class="value">{{ i.ekipa?.Naziv ?? '-' }}</div>
+        <div class="label">Ekipa</div>
+      </div>
+    </div>
+  </div>
+}
+
+@if (auth.trener() && trener(); as t) {
+  <div class="card">
+    <h3>Osobni podaci</h3>
+    <div class="grid">
+      <div class="card stat">
+        <div class="value">{{ t.Ime }} {{ t.Prezime }}</div>
+        <div class="label">Ime i prezime</div>
+      </div>
+      <div class="card stat">
+        <div class="value">{{ t.Licenca ?? '-' }}</div>
+        <div class="label">Licenca</div>
+      </div>
+      <div class="card stat">
+        <div class="value">{{ t.DatumRodjenja | date: 'dd.MM.yyyy.' }}</div>
+        <div class="label">Datum rođenja</div>
+      </div>
+    </div>
+  </div>
+}
+
+<div class="card">
+  <h3>{{ auth.igrac() ? 'Moja ekipa' : 'Moje ekipe' }}</h3>
+  @if (ekipe().length === 0) {
+    <p class="muted">Nisi trenutno vezan uz nijednu ekipu.</p>
+  } @else {
+    <ul>
+      @for (e of ekipe(); track e.EkipaID) {
+        <li>{{ e.Naziv }} @if (e.Liga) { ({{ e.Liga }}) }</li>
+      }
+    </ul>
+  }
+</div>
+
+<div class="card">
+  <h3>Moje utakmice</h3>
+  @if (utakmice().length === 0) {
+    <p class="muted">Nema utakmica za tvoju ekipu.</p>
+  } @else {
+    <table>
+      <thead>
+        <tr>
+          <th>Protivnik</th>
+          <th>Stadion</th>
+          <th>Datum</th>
+          <th>Rezultat</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (u of utakmice(); track u.UtakmicaID) {
+          <tr>
+            <td>{{ u.Protivnik }}</td>
+            <td>{{ u.stadion?.Naziv }}</td>
+            <td>{{ u.DatumVrijeme | date: 'dd.MM.yyyy. HH:mm' }}</td>
+            <td>
+              @if (u.RezultatNas !== null && u.RezultatProtivnik !== null) {
+                {{ u.RezultatNas }} : {{ u.RezultatProtivnik }}
+              } @else {
+                zakazana
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</div>
+
+<div class="card">
+  <h3>Moji treninzi</h3>
+  @if (treninzi().length === 0) {
+    <p class="muted">Nema treninga za tvoju ekipu.</p>
+  } @else {
+    <table>
+      <thead>
+        <tr>
+          <th>Datum</th>
+          <th>Trener</th>
+          <th>Stadion</th>
+          <th>Trajanje (min)</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (t of treninzi(); track t.TreningID) {
+          <tr>
+            <td>{{ t.DatumVrijeme | date: 'dd.MM.yyyy. HH:mm' }}</td>
+            <td>{{ t.trener?.Ime }} {{ t.trener?.Prezime }}</td>
+            <td>{{ t.stadion?.Naziv ?? '-' }}</td>
+            <td>{{ t.Trajanje }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</div>

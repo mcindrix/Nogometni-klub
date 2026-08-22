@@ -1,6 +1,10 @@
+import { inject } from '@angular/core';
 import { Routes } from '@angular/router';
 
+import { Auth } from './services/auth';
 import { authGuard } from './services/auth-guard';
+
+const pocetnaZaUlogu = () => (inject(Auth).admin() ? 'dashboard' : 'profil');
 
 export const routes: Routes = [
   {
@@ -11,10 +15,15 @@ export const routes: Routes = [
     path: '',
     canActivateChild: [authGuard],
     children: [
-      { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
+      { path: '', pathMatch: 'full', redirectTo: pocetnaZaUlogu },
       {
         path: 'dashboard',
         loadComponent: () => import('./pages/dashboard/dashboard').then((m) => m.Dashboard),
+      },
+      {
+        path: 'profil',
+        loadComponent: () => import('./pages/profil/profil').then((m) => m.Profil),
+        data: { dozvoljeneUloge: ['Igrac', 'Trener'] },
       },
       {
         path: 'stadioni',
@@ -49,7 +58,7 @@ export const routes: Routes = [
         path: 'treninzi',
         loadComponent: () => import('./pages/trening/trening').then((m) => m.Trening),
       },
-      { path: '**', redirectTo: 'dashboard' },
+      { path: '**', redirectTo: pocetnaZaUlogu },
     ],
   },
 ];

@@ -8,7 +8,12 @@
       </div>
     </div>
     <nav>
-      <a routerLink="/dashboard" routerLinkActive="active">Početna</a>
+      @if (auth.admin()) {
+        <a routerLink="/dashboard" routerLinkActive="active">Početna</a>
+      }
+      @if (auth.igrac() || auth.trener()) {
+        <a routerLink="/profil" routerLinkActive="active">Moj profil</a>
+      }
       @if (auth.admin() || auth.trener()) {
         <a routerLink="/igraci" routerLinkActive="active">Igrači</a>
       }

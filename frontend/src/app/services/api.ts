@@ -54,6 +54,12 @@ export class Api {
   obrisiTrenera(id: number): Observable<void> {
     return this.http.delete<void>(`${BASE_URL}/trener/${id}`);
   }
+  getMojTrener(): Observable<Trener> {
+    return this.http.get<Trener>(`${BASE_URL}/trener/moj`);
+  }
+  getMojeEkipeTrenera(): Observable<Ekipa[]> {
+    return this.http.get<Ekipa[]>(`${BASE_URL}/trener/moje-ekipe`);
+  }
 
   // Ekipa
   getEkipe(): Observable<Ekipa[]> {
@@ -75,6 +81,9 @@ export class Api {
   }
   obrisiIgraca(id: number): Observable<void> {
     return this.http.delete<void>(`${BASE_URL}/igrac/${id}`);
+  }
+  getMojIgrac(): Observable<Igrac> {
+    return this.http.get<Igrac>(`${BASE_URL}/igrac/moj`);
   }
 
   // Clanarina

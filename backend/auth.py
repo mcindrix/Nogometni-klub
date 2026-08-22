@@ -74,3 +74,9 @@ def admin_ili_trener(korisnik: dict = Depends(trenutni_korisnik)) -> dict:
     if korisnik["Uloga"] not in ("Admin", "Trener"):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Potrebna je Admin ili Trener uloga")
     return korisnik
+
+
+def igrac_ili_trener(korisnik: dict = Depends(trenutni_korisnik)) -> dict:
+    if korisnik["Uloga"] not in ("Igrac", "Trener"):
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Potrebna je Igrac ili Trener uloga")
+    return korisnik

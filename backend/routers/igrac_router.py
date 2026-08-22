@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 
 import database
 import schemas
-from auth import samo_admin, trenutni_korisnik
+from auth import samo_admin, samo_igrac, trenutni_korisnik
 
 router = APIRouter(prefix="/api/igrac", tags=["Igrac"], dependencies=[Depends(trenutni_korisnik)])
 
@@ -35,6 +35,11 @@ def dodaj_igraca(podaci: schemas.IgracCreate):
     zapis = {"IgracID": iid, **podaci.model_dump()}
     database.igraci[iid] = zapis
     return _spoji(zapis)
+
+
+@router.get("/moj", response_model=schemas.IgracRead)
+def moj_profil(korisnik: dict = Depends(samo_igrac)):
+    return _spoji(database.igraci[korisnik["IgracID"]])
 
 
 @router.get("/{igrac_id}", response_model=schemas.IgracRead)

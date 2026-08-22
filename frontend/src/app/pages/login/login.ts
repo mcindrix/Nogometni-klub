@@ -21,7 +21,7 @@ export class Login {
   prijava(): void {
     this.greska.set(null);
     this.auth.prijava(this.korisnickoIme, this.lozinka).subscribe({
-      next: () => this.router.navigateByUrl('/dashboard'),
+      next: () => this.router.navigateByUrl('/'),
       error: (err) => this.greska.set(err.error?.detail ?? 'Prijava nije uspjela'),
     });
   }
