@@ -1,12 +1,16 @@
 [project]
 name = "backend"
 version = "0.1.0"
-description = "Backend za Nogometni klub - demo aplikacija bez baze podataka (podaci se drze u memoriji)"
+description = "Backend za Nogometni klub - MySQL baza preko SQLAlchemy"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
+    "bcrypt>=5.0.0",
     "fastapi[standard]>=0.115.0",
     "pyjwt>=2.8.0",
+    "pymysql",
+    "python-dotenv",
+    "sqlalchemy>=2.0",
 ]
 
 [tool.fastapi]

@@ -4,7 +4,7 @@
 
 from datetime import date, datetime
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 
 # ---- Auth -------------------------------------------------------------
@@ -29,6 +29,8 @@ class PozicijaCreate(BaseModel):
 
 
 class PozicijaRead(PozicijaCreate):
+    model_config = ConfigDict(from_attributes=True)
+
     PozicijaID: int
 
 
@@ -41,6 +43,8 @@ class StadionCreate(BaseModel):
 
 
 class StadionRead(StadionCreate):
+    model_config = ConfigDict(from_attributes=True)
+
     StadionID: int
 
 
@@ -54,6 +58,8 @@ class TrenerCreate(BaseModel):
 
 
 class TrenerRead(TrenerCreate):
+    model_config = ConfigDict(from_attributes=True)
+
     TrenerID: int
 
 
@@ -65,6 +71,8 @@ class EkipaCreate(BaseModel):
 
 
 class EkipaRead(EkipaCreate):
+    model_config = ConfigDict(from_attributes=True)
+
     EkipaID: int
 
 
@@ -79,6 +87,8 @@ class IgracCreate(BaseModel):
 
 
 class IgracRead(IgracCreate):
+    model_config = ConfigDict(from_attributes=True)
+
     IgracID: int
     pozicija: PozicijaRead
     ekipa: EkipaRead | None = None
@@ -94,6 +104,8 @@ class ClanarinaCreate(BaseModel):
 
 
 class ClanarinaRead(ClanarinaCreate):
+    model_config = ConfigDict(from_attributes=True)
+
     ClanarinaID: int
     igrac: IgracRead
 
@@ -110,6 +122,8 @@ class UtakmicaCreate(BaseModel):
 
 
 class UtakmicaRead(UtakmicaCreate):
+    model_config = ConfigDict(from_attributes=True)
+
     UtakmicaID: int
     ekipa: EkipaRead
     stadion: StadionRead
@@ -126,6 +140,8 @@ class TreningCreate(BaseModel):
 
 
 class TreningRead(TreningCreate):
+    model_config = ConfigDict(from_attributes=True)
+
     TreningID: int
     ekipa: EkipaRead
     trener: TrenerRead

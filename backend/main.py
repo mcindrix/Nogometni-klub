@@ -1,6 +1,10 @@
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy import text
 
+from database import engine
 from routers import (
     auth_router,
     clanarina_router,
@@ -14,7 +18,14 @@ from routers import (
     utakmica_router,
 )
 
-app = FastAPI(title="Nogometni klub API")
+@asynccontextmanager
+async def lifespan(app: FastAPI): #provjerava dali je mysql dostupan
+    with engine.connect() as conn:
+        conn.execute(text("SELECT 1"))
+    yield
+
+
+app = FastAPI(title="Nogometni klub API", lifespan=lifespan)
 
 # frontend (Angular dev server) radi na drugom portu, pa treba CORS
 app.add_middleware(

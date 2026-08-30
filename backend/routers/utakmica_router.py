@@ -1,75 +1,85 @@
 from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.orm import Session
 
-import database
+import models
 import schemas
 from auth import admin_ili_trener, igrac_ili_trener, samo_admin, trenutni_korisnik
+from database import get_db
 
 router = APIRouter(prefix="/api/utakmica", tags=["Utakmica"], dependencies=[Depends(trenutni_korisnik)])
 
 
-def _spoji(utakmica: dict) -> dict:
-    return {
-        **utakmica,
-        "ekipa": database.ekipe[utakmica["EkipaID"]],
-        "stadion": database.stadioni[utakmica["StadionID"]],
-    }
-
-
-def _provjeri_veze(podaci: schemas.UtakmicaCreate):
-    if podaci.EkipaID not in database.ekipe:
+def _provjeri_veze(podaci: schemas.UtakmicaCreate, db: Session):
+    if not db.get(models.Ekipa, podaci.EkipaID):
         raise HTTPException(status_code=400, detail="Odabrana ekipa ne postoji")
-    if podaci.StadionID not in database.stadioni:
+    if not db.get(models.Stadion, podaci.StadionID):
         raise HTTPException(status_code=400, detail="Odabrani stadion ne postoji")
 
 
 @router.get("", response_model=list[schemas.UtakmicaRead])
-def popis_utakmica():
-    utakmice = sorted(database.utakmice.values(), key=lambda u: u["DatumVrijeme"], reverse=True)
-    return [_spoji(u) for u in utakmice]
+def popis_utakmica(db: Session = Depends(get_db)):
+    return (
+        db.query(models.Utakmica)
+        .order_by(models.Utakmica.DatumVrijeme.desc())
+        .all()
+    )
 
 
 @router.post("", response_model=schemas.UtakmicaRead, status_code=201, dependencies=[Depends(admin_ili_trener)])
-def dodaj_utakmicu(podaci: schemas.UtakmicaCreate):
-    _provjeri_veze(podaci)
-    uid = database.sljedeci_id("utakmica")
-    zapis = {"UtakmicaID": uid, **podaci.model_dump()}
-    database.utakmice[uid] = zapis
-    return _spoji(zapis)
+def dodaj_utakmicu(podaci: schemas.UtakmicaCreate, db: Session = Depends(get_db)):
+    _provjeri_veze(podaci, db)
+    zapis = models.Utakmica(**podaci.model_dump())
+    db.add(zapis)
+    db.commit()
+    db.refresh(zapis)
+    return zapis
 
 
 @router.get("/moje", response_model=list[schemas.UtakmicaRead])
-def moje_utakmice(korisnik: dict = Depends(igrac_ili_trener)):
+def moje_utakmice(korisnik: dict = Depends(igrac_ili_trener), db: Session = Depends(get_db)):
     if korisnik["Uloga"] == "Igrac":
-        ekipa_id_ovi = {database.igraci[korisnik["IgracID"]]["EkipaID"]}
+        igrac = db.get(models.Igrac, korisnik["IgracID"])
+        ekipa_id_ovi = {igrac.EkipaID}
     else:
-        ekipa_id_ovi = {t["EkipaID"] for t in database.treninzi.values() if t["TrenerID"] == korisnik["TrenerID"]}
-    utakmice = sorted(
-        (u for u in database.utakmice.values() if u["EkipaID"] in ekipa_id_ovi),
-        key=lambda u: u["DatumVrijeme"],
+        ekipa_id_ovi = {
+            t.EkipaID
+            for t in db.query(models.Trening).filter_by(TrenerID=korisnik["TrenerID"]).all()
+        }
+    if not ekipa_id_ovi:
+        return []
+    return (
+        db.query(models.Utakmica)
+        .filter(models.Utakmica.EkipaID.in_(ekipa_id_ovi))
+        .order_by(models.Utakmica.DatumVrijeme.asc())
+        .all()
     )
-    return [_spoji(u) for u in utakmice]
 
 
 @router.get("/{utakmica_id}", response_model=schemas.UtakmicaRead)
-def dohvati_utakmicu(utakmica_id: int):
-    zapis = database.utakmice.get(utakmica_id)
+def dohvati_utakmicu(utakmica_id: int, db: Session = Depends(get_db)):
+    zapis = db.get(models.Utakmica, utakmica_id)
     if not zapis:
         raise HTTPException(status_code=404, detail="Utakmica nije pronadjena")
-    return _spoji(zapis)
+    return zapis
 
 
 @router.put("/{utakmica_id}", response_model=schemas.UtakmicaRead, dependencies=[Depends(samo_admin)])
-def azuriraj_utakmicu(utakmica_id: int, podaci: schemas.UtakmicaCreate):
-    if utakmica_id not in database.utakmice:
+def azuriraj_utakmicu(utakmica_id: int, podaci: schemas.UtakmicaCreate, db: Session = Depends(get_db)):
+    zapis = db.get(models.Utakmica, utakmica_id)
+    if not zapis:
         raise HTTPException(status_code=404, detail="Utakmica nije pronadjena")
-    _provjeri_veze(podaci)
-    zapis = {"UtakmicaID": utakmica_id, **podaci.model_dump()}
-    database.utakmice[utakmica_id] = zapis
-    return _spoji(zapis)
+    _provjeri_veze(podaci, db)
+    for polje, vrijednost in podaci.model_dump().items():
+        setattr(zapis, polje, vrijednost)
+    db.commit()
+    db.refresh(zapis)
+    return zapis
 
 
 @router.delete("/{utakmica_id}", status_code=204, dependencies=[Depends(samo_admin)])
-def obrisi_utakmicu(utakmica_id: int):
-    if utakmica_id not in database.utakmice:
+def obrisi_utakmicu(utakmica_id: int, db: Session = Depends(get_db)):
+    zapis = db.get(models.Utakmica, utakmica_id)
+    if not zapis:
         raise HTTPException(status_code=404, detail="Utakmica nije pronadjena")
-    del database.utakmice[utakmica_id]
+    db.delete(zapis)
+    db.commit()
