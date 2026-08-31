@@ -50,19 +50,24 @@ Frontend je na `http://localhost:4200`, backend na `http://localhost:8000` (doku
 ### Admin
 
 ![Admin - Početna](screenshots/admin-pocetna.png)
-![Admin - Treninzi](screenshots/admin-treninzi.png)
+![Admin - Igrači](screenshots/admin-igraci.png)
+![Admin - Utakmice](screenshots/admin-utakmice.png)
 ![Admin - Članarine](screenshots/admin-clanarine.png)
 
 ### Trener
 
 ![Trener - Početna](screenshots/trener-pocetna.png)
-![Trener - Treninzi](screenshots/trener-treninzi.png)
+![Trener - Igrači](screenshots/trener-igraci.png)
+![Trener - Utakmice](screenshots/trener-utakmice.png)
 ![Trener - Članarine](screenshots/trener-clanarine.png)
 
 ### Igrač
 
-![Igrač - Početna](screenshots/igrac-pocetna.png)
-![Igrač - Treninzi](screenshots/igrac-treninzi.png)
+![Igrač - Početna](screenshots/igrac1-pocetna.png)
+![Igrač - Utakmice](screenshots/igrac1-utakmice.png)
+![Igrač - Treninzi](screenshots/igrac1-treninzi.png)
+![Igrač - Profil (napadač)](screenshots/igrac2-pocetna.png)
+![Igrač - Profil (drugi igrač)](screenshots/igrac3-pocetna.png)
 
 ## Uloge i pristupi
 
