@@ -6,28 +6,33 @@ treninzi, korisnici) traju u bazi - restart servera ih vise ne brise.
 
 Shema baze i pocetni podaci vec postoje u MySQL kontejneru/volumeu
 (`nk_mysql_data`) - dok god taj volume postoji, podaci ostaju kroz
-restart servera i racunala. Ako se volume ikad izgubi, shemu (definiranu
-u `models.py`) treba rucno rekreirati (npr. SQL-om ili privremenim
-`models.Base.metadata.create_all(bind=engine)` pozivom) i podatke
-ponovno unijeti.
+restart servera i racunala.
 
-## Preduvjeti
+## Dijeljenje baze (GitHub / drugo racunalo)
 
-MySQL server dostupan na adresi iz `DATABASE_URL` (vidi `.env.example`).
-U ovom projektu koristimo pravi MySQL 8 pokrenut u Docker kontejneru:
+`db/init.sql` je izvoz cijele baze (`mysqldump`) - shema I trenutni
+podaci, u jednom fajlu koji se commita u repo. `docker-compose.yml` ga
+automatski ucita pri PRVOM pokretanju praznog volumena. Bilo tko s
+Dockerom, bez ijedne Python ovisnosti, dobije identicnu bazu:
 
 ```bash
-docker run -d --name nk-mysql \
-  -e MYSQL_ROOT_PASSWORD=<lozinka> \
-  -e MYSQL_DATABASE=nogometni_klub \
-  -e MYSQL_USER=nk_app \
-  -e MYSQL_PASSWORD=<lozinka> \
-  -p 3306:3306 \
-  -v nk_mysql_data:/var/lib/mysql \
-  mysql:8.0
+cp .env.example .env   # pa upisi svoje lozinke (MYSQL_* varijable)
+docker compose up -d
 ```
 
-## Postavljanje
+Napomena: `db/init.sql` se ne generira automatski kad se podaci promijene
+- to je snapshot u trenutku izvoza. Za osvjeziti ga nakon stvarnih promjena:
+
+```bash
+docker exec nk-mysql mysqldump -u nk_app -p<lozinka> --databases nogometni_klub \
+  --routines --triggers --single-transaction --no-tablespaces > db/init.sql
+```
+
+Ako baza ikad nosi stvarne (ne demo) korisnicke podatke, `db/init.sql`
+**ne bi smio** ici u javni repo - ovdje je u redu jer su to samo demo
+lozinke (admin123 i sl.), hashirane bcryptom.
+
+## Postavljanje (bez Dockera, spajanje na vec pokrenutu bazu)
 
 ```bash
 uv sync

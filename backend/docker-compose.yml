@@ -1,0 +1,33 @@
+# Pokrece MySQL bazu identicnu razvojnoj.
+#
+# Prvo pokretanje (prazan volume) automatski ucita db/init.sql - shemu
+# I SVE TRENUTNE PODATKE. Svatko tko klonira repo i ima Docker moze:
+#
+#   cp .env.example .env   # pa upisi svoje lozinke
+#   docker compose up -d
+#
+# i dobije potpuno istu bazu, bez potrebe za Python/uv/Alembic bilo cim.
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: nk-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - nk_mysql_data:/var/lib/mysql
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  nk_mysql_data:
