@@ -1,6 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-
 import schemas
 from auth import dohvati_ulogu, napravi_token, provjeri_lozinku, trenutni_korisnik
 from database import get_db
